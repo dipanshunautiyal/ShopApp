@@ -13,6 +13,7 @@ import com.shopapp.di.component.DaggerAppComponent
 import com.shopapp.di.module.RepositoryModule
 import com.shopapp.gateway.Api
 import com.shopapp.shopify.api.ShopifyApi
+import com.shopapp.demo.DemoApi
 import io.fabric.sdk.android.Fabric
 import io.reactivex.plugins.RxJavaPlugins
 
@@ -30,13 +31,19 @@ open class ShopApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        val api = ShopifyApi(
-            this,
-            BuildConfig.SHOPIFY_BASE_DOMAIN,
-            BuildConfig.SHOPIFY_ACCESS_TOKEN,
-            BuildConfig.SHOPIFY_API_KEY,
-            BuildConfig.SHOPIFY_API_PASSWORD
-        )
+        val api: Api = if (BuildConfig.SHOPIFY_BASE_DOMAIN?.contains("YOUR") == true ||
+            BuildConfig.SHOPIFY_ACCESS_TOKEN?.contains("YOUR") == true) {
+            // No real Shopify credentials provided — use demo provider
+            DemoApi()
+        } else {
+            ShopifyApi(
+                this,
+                BuildConfig.SHOPIFY_BASE_DOMAIN,
+                BuildConfig.SHOPIFY_ACCESS_TOKEN,
+                BuildConfig.SHOPIFY_API_KEY,
+                BuildConfig.SHOPIFY_API_PASSWORD
+            )
+        }
         val dao = DaoImpl(this)
 
         appComponent = buildAppComponent(api, dao)
