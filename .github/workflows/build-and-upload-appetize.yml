@@ -38,7 +38,7 @@ jobs:
         path: app/build/outputs/apk/debug/app-debug.apk
 
     - name: Upload to Appetize (optional)
-      if: ${{ secrets.APPETIZE_API_KEY }}
+      if: ${{ secrets.APPETIZE_API_KEY != '' }}
       env:
         APPETIZE_API_KEY: ${{ secrets.APPETIZE_API_KEY }}
       run: |
