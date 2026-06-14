@@ -1,4 +1,5 @@
 name: Build APK and upload to Appetize
+# Trigger new run to pick up workflow fix
 
 on:
   push:
