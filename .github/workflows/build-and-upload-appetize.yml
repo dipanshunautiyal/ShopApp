@@ -38,7 +38,7 @@ jobs:
         path: app/build/outputs/apk/debug/app-debug.apk
 
     - name: Upload to Appetize (optional)
-      if: secrets.APPETIZE_API_KEY != ''
+      if: ${{ secrets.APPETIZE_API_KEY }}
       env:
         APPETIZE_API_KEY: ${{ secrets.APPETIZE_API_KEY }}
       run: |
@@ -47,5 +47,4 @@ jobs:
         echo "Uploading $APK to Appetize..."
         RESPONSE=$(curl -s -X POST -F "file=@${APK}" -F "platform=android" -F "apiKey=${APPETIZE_API_KEY}" https://api.appetize.io/v1/apps)
         echo "Appetize response: $RESPONSE"
-        # Extract public URL if present
         echo "$RESPONSE" | python3 -c "import sys, json; r=json.load(sys.stdin); print(r.get('publicURL') or r.get('embed') or r)"
