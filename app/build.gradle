@@ -8,6 +8,17 @@ apply plugin: 'jacoco-android'
 android {
     def globalConfiguration = rootProject.extensions.getByName("ext")
 
+    // Load Shopify credentials from root `shopify.properties` (not checked into VCS)
+    def shopifyPropsFile = rootProject.file("shopify.properties")
+    def shopifyProps = new Properties()
+    if (shopifyPropsFile.exists()) {
+        shopifyProps.load(new FileInputStream(shopifyPropsFile))
+    }
+    def shopifyBaseDomain = shopifyProps.getProperty('SHOPIFY_BASE_DOMAIN', 'YOUR_BASE_DOMAIN')
+    def shopifyAccessToken = shopifyProps.getProperty('SHOPIFY_ACCESS_TOKEN', 'YOUR_STOREFRONT_ACCESS_TOKEN')
+    def shopifyApiKey = shopifyProps.getProperty('SHOPIFY_API_KEY', 'YOUR_API_KEY')
+    def shopifyApiPassword = shopifyProps.getProperty('SHOPIFY_API_PASSWORD', 'YOUR_API_PASSWORD')
+
     compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
     buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
 
@@ -19,6 +30,11 @@ android {
 
         versionCode 1
         versionName globalConfiguration["versionName"]
+
+        buildConfigField "String", "SHOPIFY_BASE_DOMAIN", "\"${shopifyBaseDomain}\""
+        buildConfigField "String", "SHOPIFY_ACCESS_TOKEN", "\"${shopifyAccessToken}\""
+        buildConfigField "String", "SHOPIFY_API_KEY", "\"${shopifyApiKey}\""
+        buildConfigField "String", "SHOPIFY_API_PASSWORD", "\"${shopifyApiPassword}\""
 
         multiDexEnabled true
     }
@@ -69,6 +85,7 @@ dependencies {
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
 
     implementation 'org.jsoup:jsoup:1.10.1'
+    implementation "com.github.rubygarage:shopapp-shopify-android:1.0.4"
 
     implementation "io.reactivex.rxjava2:rxjava:$rxVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"

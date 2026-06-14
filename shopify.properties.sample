@@ -1,0 +1,7 @@
+# Copy to shopify.properties and fill with your store credentials.
+# This file is ignored by git when renamed to shopify.properties.
+
+SHOPIFY_BASE_DOMAIN=your-store.myshopify.com
+SHOPIFY_ACCESS_TOKEN=your_storefront_access_token
+SHOPIFY_API_KEY=your_api_key
+SHOPIFY_API_PASSWORD=your_api_password
