@@ -20,9 +20,7 @@ jobs:
         java-version: '11'
 
     - name: Set up Android SDK
-      uses: r0adkll/setup-android@v2
-      with:
-        api-level: 26
+      uses: android-actions/setup-android@v3
         target: android-26
         build-tools: 27.0.3
 
